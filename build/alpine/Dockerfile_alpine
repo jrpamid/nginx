@@ -1,0 +1,85 @@
+# Base OS Image
+FROM alpine:3.10.3 as build
+
+# default nginx stable version.
+# nginx_ver can be over-ridden with build argument
+ARG nginx_ver=1.16.1
+
+# Install the required dependencies to compile and build  from the source code
+RUN apk add --no-cache --virtual .build-deps \
+            build-base \ 
+            wget \ 
+            tar \
+            gnupg \
+            openssl \
+            openssl-dev \ 
+            zlib \
+            zlib-dev \
+            pcre \
+            pcre-dev
+
+# working dir where the source code has to be downloaded to 
+WORKDIR /tmp
+ 
+# Download Nginx stable version source code
+RUN set -x 	&& \
+    # nginx source code
+    wget http://nginx.org/download/nginx-${nginx_ver}.tar.gz && \
+    tar xvzf nginx-${nginx_ver}.tar.gz && \
+    cd nginx-${nginx_ver} && \
+    ./configure \
+	--with-ld-opt="-static" \
+        --with-http_sub_module && \
+    make && \
+    make install && \
+    strip  /usr/local/nginx/sbin/nginx
+
+RUN ln -sf /dev/stdout /usr/local/nginx/logs/access.log && \
+    ln -sf /dev/stderr /usr/local/nginx/logs/error.log
+
+
+# Final Minimal Image 
+FROM alpine:3.10.3 
+
+# LABELS, MetaData
+LABEL author=jrpamid.cloudops@gmail.com \
+      name="nginx 1.16.1" \
+      description="opensource high performance, light weight web and reverse proxy server"
+
+# Environement Variables
+ENV NGINX_USER=nginx \
+    NGINX_UID=1004 \
+    NGINX_GROUP=nginx \
+    NGINX_GID=1004  \
+    NGINX_PORT=8080 
+
+# Create Nginx user and group accounts
+RUN set -x  && \
+    addgroup -g ${NGINX_GID} ${NGINX_GROUP} && \
+    adduser -u ${NGINX_UID} -G ${NGINX_GROUP} -S  ${NGINX_USER} && \
+    mkdir -p /usr/local/nginx/logs && \
+    touch /usr/local/nginx/logs/access.log && \
+    touch /usr/local/nginx/logs/error.log && \
+    chown -R ${NGINX_USER}:${NGINX_GROUP} /usr/local/nginx/logs && \
+    ln -sf /dev/stdout  /usr/local/nginx/logs/access.log && \
+    ln -sf /dev/stderr /usr/local/nginx/logs/error.log 
+
+COPY --from=build /usr/local/nginx/sbin/nginx  /usr/local/bin/nginx 
+COPY files-to-add/index.html  /usr/local/nginx/html/
+COPY files-to-add/nginx.conf /usr/local/nginx/conf/
+
+# Change default stop signal from SIGTERM  to SIGQUIT for graceful  shutdown
+STOPSIGNAL SIGQUIT
+
+# Exposing the port 8080 
+EXPOSE ${NGINX_PORT}/tcp
+
+# Drop down from root user to nginx:nginx user/group
+USER ${NGINX_USER}
+
+# Execute the Nginx as a front ground process
+ENTRYPOINT ["/usr/local/bin/nginx"]
+CMD ["-g", "daemon off;"]
+
+
+
