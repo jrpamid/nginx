@@ -1,0 +1,16 @@
+---
+version: "3"
+services:
+  nginx_alpine:
+    build:
+      context: build/alpine
+      dockerfile: Dockerfile
+      args:
+        alpine_ver: 3.10.3
+        nginx_ver: 1.16.1
+    environment:
+        ALPINE_VERSION: 3.10.3
+        NGINX_VERSION: 1.16.1
+    image: nginx_alpine:1.16.1
+
+    
