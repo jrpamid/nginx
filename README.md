@@ -66,7 +66,7 @@ Nginx Version to be compiled and  built can be passed as a build arg. Default ve
 # Image Usage
 # ------------ #
 
-#nginx version = 1.17.1
+# nginx version = 1.17.1
 $sudo docker build --tag nginx_centos:1.17.1 --build-arg nginx_ver=1.17.1 .
 
 # Test and dump the configuration
@@ -108,10 +108,10 @@ The base ubuntu image to be used can be provided as a build argument.
 # Image Usage
 # ------------ #
 
-#ubuntu 16.04 codename=xenial
+# ubuntu 16.04 codename=xenial
 $sudo docker build --tag nginx_ubuntu:xenial --build-arg ubuntu_codename=xenial .
 
-#ubuntu 18.04 codename = bionic
+# ubuntu 18.04 codename = bionic
 $sudo docker build --tag nginx_ubuntu:bionic --build-arg ubuntu_codename=bionic .
 #ubuntu 19.04 codename=disco
 $sudo docker build --tag nginx_ubuntu:disco --build-arg ubuntu_codename=disco .
@@ -137,5 +137,5 @@ $ sudo docker run -itd --name my_wwww \
 
 
 #### Full Nginx sample configuration file
-[link] <https://www.nginx.com/resources/wiki/start/topics/examples/full/>
+[link]<https://www.nginx.com/resources/wiki/start/topics/examples/full/>
 
