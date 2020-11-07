@@ -97,7 +97,23 @@ $ sudo docker run -itd --name my_wwww \
 ## *Nginx on Ubuntu*
 Dockerfile = build/ubuntu/Dockerfile
 </br>
-Default version = 1.16.1
+
+>This Container image definition file doesn't use multi-stage builds. 
+The Image is built, by adding the nginx repo and installing from the repo using package manager.
+Version depends on the repo.
+>
+</br>
+
+| ubuntu version | ubuntu_codename  |
+| -------------- | ---------------- |
+|   20.04        | focal            |
+|   20.10        | groovy           |
+|   21.04        | hirsute          |
+|   19.10        | eoan             |
+|   19.04        | disco            |
+|   18.04        | bionic           |
+|   16.04        | xenial           |
+
 
 </br>
 

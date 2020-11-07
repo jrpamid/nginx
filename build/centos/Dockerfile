@@ -1,6 +1,17 @@
-FROM centos:7 as base
-
+# defaults if --build-arg is not provided
+ARG centos_ver=7
 ARG nginx_ver=1.16.1
+ARG pcre_ver=8.32
+ARG zlib_ver=1.2.11
+ARG openssl_ver=1.1.1d
+
+FROM centos:${centos_ver} as base
+# to make these variables accessible  for other steps
+ARG nginx_ver
+ARG centos_ver
+ARG pcre_ver
+ARG zlib_ver
+ARG openssl_ver
 
 RUN yum update -y && \
     yum install -y epel-release && \
@@ -22,12 +33,12 @@ WORKDIR /tmp
 
 RUN wget http://nginx.org/download/nginx-${nginx_ver}.tar.gz && \
     tar xvzf nginx-${nginx_ver}.tar.gz && \
-    wget https://ftp.pcre.org/pub/pcre/pcre-8.43.tar.gz && \
-    tar xvzf pcre-8.43.tar.gz && \
-    wget https://www.zlib.net/zlib-1.2.11.tar.gz && \
-    tar xvzf zlib-1.2.11.tar.gz && \
-    wget https://www.openssl.org/source/openssl-1.1.1d.tar.gz && \
-    tar xvzf openssl-1.1.1d.tar.gz && \
+    wget https://ftp.pcre.org/pub/pcre/pcre-${pcre_ver}.tar.gz && \
+    tar xvzf pcre-${pcre_ver}.tar.gz && \
+    wget https://www.zlib.net/zlib-${zlib_ver}.tar.gz && \
+    tar xvzf zlib-${zlib_ver}.tar.gz && \
+    wget https://www.openssl.org/source/openssl-${openssl_ver}.tar.gz && \
+    tar xvzf openssl-${openssl_ver}.tar.gz && \
     cd nginx-${nginx_ver} && \
     ./configure --prefix=/opt/nginx \
             --sbin-path=/opt/nginx/bin/nginx \
@@ -39,7 +50,7 @@ RUN wget http://nginx.org/download/nginx-${nginx_ver}.tar.gz && \
             --user=nginx \
             --group=nginx \
             --build=CentOS \
-            --builddir=nginx-1.16.1 \
+            --builddir=nginx-${nginx_ver} \
             --with-select_module \
             --with-poll_module \
             --with-threads \
@@ -75,10 +86,10 @@ RUN wget http://nginx.org/download/nginx-${nginx_ver}.tar.gz && \
             --with-stream_realip_module \
             --with-stream_ssl_preread_module \
             --with-compat \
-            --with-pcre=../pcre-8.43 \
+            --with-pcre=../pcre-${pcre_ver} \
             --with-pcre-jit \
-            --with-zlib=../zlib-1.2.11 \
-            --with-openssl=../openssl-1.1.1d \
+            --with-zlib=../zlib-${zlib_ver} \
+            --with-openssl=../openssl-${openssl_ver} \
             --with-openssl-opt=no-nextprotoneg \
             --with-debug  && \
       make &&\
@@ -88,10 +99,10 @@ RUN wget http://nginx.org/download/nginx-${nginx_ver}.tar.gz && \
 
 ########################### Final Image #################################
 
-FROM centos:7
+FROM centos:${centos_ver}
 
-LABEL name="nginx 1.16.1" \
-      description="nginx webserver for centos 7" \
+LABEL name="nginx ${nginx_ver}" \
+      description="nginx webserver for centos ${centos_ver}" \
       author="jrpamid.cloudops@gmail.com"
 
 

@@ -1,25 +1,19 @@
 # argument for nginx  version.
 #  can be overridden  via command-line --build-arg nginx_codename=disco|trusty|bionic
-ARG ubuntu_codename
+ARG ubuntu_codename=groovy
 
-# base ubuntu 18.04/bionic image
+# base ubuntu 20.10/groovy
 FROM ubuntu:${ubuntu_codename}
 ARG ubuntu_codename
 
-# Image meta data
-LABEL name="nginx 1.16.1" \
-      description="Nginx web and reverse proxy server" \
-      author="jrpamid.cloudops@gmail.com" \
-      ubuntu_codename=${ubuntu_codename}
-
-ENV  UBUNTU_CODENAME=${ubuntu_codename}
+ENV  ubuntu_codename=${ubuntu_codename}
 
 RUN set -x \
     && apt-get update \
     && apt-get install --no-install-recommends --no-install-suggests -y apt-transport-https ca-certificates wget gnupg1 \
     && wget https://nginx.org/keys/nginx_signing.key \
     && apt-key add nginx_signing.key \
-    && echo deb https://nginx.org/packages/mainline/ubuntu/ ${UBUNTU_CODENAME} nginx >> /etc/apt/sources.list \
+    && echo deb https://nginx.org/packages/mainline/ubuntu/dists/${ubuntu_codename} nginx >> /etc/apt/sources.list \
     && apt-get update -y \
     && apt-get install -y nginx \
     && apt-get remove --purge --auto-remove -y wget gnupg2
@@ -42,6 +36,13 @@ EXPOSE 8080
 
 # Drop to nonroot  user
 USER nginx
+
+# Image meta data
+LABEL name="nginx" \
+      description="Nginx web and reverse proxy server" \
+      author="jrpamid.cloudops@gmail.com" \
+      ubuntu_codename=${ubuntu_codename}
+
 
 ENTRYPOINT ["nginx"]
 CMD ["-g" ,"daemon off;"]
