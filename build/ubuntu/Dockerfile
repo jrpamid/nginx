@@ -16,7 +16,7 @@ ENV  UBUNTU_CODENAME=${ubuntu_codename}
 
 RUN set -x \
     && apt-get update \
-    && apt install --no-install-recommends --no-install-suggests -y apt-transport-https ca-certificates wget gnupg1 \
+    && apt-get install --no-install-recommends --no-install-suggests -y apt-transport-https ca-certificates wget gnupg1 \
     && wget https://nginx.org/keys/nginx_signing.key \
     && apt-key add nginx_signing.key \
     && echo deb https://nginx.org/packages/mainline/ubuntu/ ${UBUNTU_CODENAME} nginx >> /etc/apt/sources.list \
