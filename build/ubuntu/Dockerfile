@@ -13,7 +13,7 @@ RUN set -x \
     && apt-get install --no-install-recommends --no-install-suggests -y apt-transport-https ca-certificates wget gnupg1 \
     && wget https://nginx.org/keys/nginx_signing.key \
     && apt-key add nginx_signing.key \
-    && echo deb https://nginx.org/packages/mainline/ubuntu/dists/${ubuntu_codename} nginx >> /etc/apt/sources.list \
+    && echo "deb https://nginx.org/packages/mainline/ubuntu/dists/ ${ubuntu_codename} nginx" >> /etc/apt/sources.list \
     && apt-get update -y \
     && apt-get install -y nginx \
     && apt-get remove --purge --auto-remove -y wget gnupg2
