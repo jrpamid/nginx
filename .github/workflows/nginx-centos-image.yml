@@ -1,0 +1,23 @@
+  
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Build the Nginx on Centos image
+      run: |
+       cd ./centos
+       echo "${{ secrets.DOCKERPW }}" | docker login -u "jrpamid" --password-stdin
+       docker build -t jrpamid/nginx_centos:1.18.0 --build-arg centos_ver=8 --build-arg nginx_ver=1.18.0 .
+       docker push jrpamid/nginx_centos:1.18.0
