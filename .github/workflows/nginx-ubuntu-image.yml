@@ -1,5 +1,5 @@
   
-name: Docker Image CI
+name: Nginx on Ubuntu OS
 
 on:
   push:
