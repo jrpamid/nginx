@@ -10,13 +10,12 @@ ENV  ubuntu_codename=${ubuntu_codename}
 
 RUN set -x \
     && apt-get update \
-    && apt-get install --no-install-recommends --no-install-suggests -y apt-transport-https ca-certificates wget gnupg1 \
+    && apt-get install --no-install-recommends --no-install-suggests -y apt-transport-https ca-certificates \
     && wget https://nginx.org/keys/nginx_signing.key \
     && apt-key add nginx_signing.key \
     && echo "deb https://nginx.org/packages/mainline/ubuntu/dists/ ${ubuntu_codename} nginx" >> /etc/apt/sources.list \
     && apt-get update -y \
-    && apt-get install -y nginx \
-    && apt-get remove --purge --auto-remove -y wget gnupg2
+    && apt-get install -y nginx
 
 # copy the default nginx.conf file
 COPY --chown=nginx:nginx files-to-add/nginx.conf /etc/nginx/nginx.conf
@@ -43,8 +42,8 @@ LABEL name="nginx" \
       author="jrpamid.cloudops@gmail.com" \
       ubuntu_codename=${ubuntu_codename}
 
-
 ENTRYPOINT ["nginx"]
+
 CMD ["-g" ,"daemon off;"]
 
 
