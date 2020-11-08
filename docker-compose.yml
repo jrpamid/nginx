@@ -6,24 +6,25 @@ services:
       context: build/alpine
       dockerfile: Dockerfile
       args:
-        alpine_ver: 3.10.3
-        nginx_ver: 1.16.1
+        alpine_ver: 3.12
+        nginx_ver: 1.18.0
     environment:
-        ALPINE_VERSION: 3.10.3
-        NGINX_VERSION: 1.16.1
-    image: jrpamid/nginx_alpine:1.16.1
+        ALPINE_VERSION: 3.12
+        NGINX_VERSION: 1.18.0
+    image: jrpamid/nginx_alpine:1.18.0
   
   nginx_centos:
     build:
       context: build/centos
       dockerfile: Dockerfile
       args:
-        nginx_ver: 1.16.1
+        nginx_ver: 1.18.0
+        centos_ver: 8
     environment:
-        NGINX_VERSION: 1.16.1
+        NGINX_VERSION: 1.18.0
         NGINX_USER: nginx
         NGINX_PORT: 8080
-    image: jrpamid/nginx_centos:1.16.1
+    image: jrpamid/nginx_centos:1.18.0
  
   nginx_ubuntu:
     build:
@@ -31,9 +32,11 @@ services:
       dockerfile: Dockerfile
       args:
         ubuntu_codename: disco
+        nginx_ver: 1.18.0
     environment:
        NGINX_USER: nginx
        NGINX_PORT: 8080
-    image: jrpamid/nginx_ubuntu:disco  
+       NGINX_VERSION: 1.18.0
+    image: jrpamid/nginx_ubuntu:1.18.0  
 
     

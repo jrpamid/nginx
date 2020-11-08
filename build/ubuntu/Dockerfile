@@ -6,25 +6,27 @@ ARG ubuntu_codename=groovy
 FROM ubuntu:${ubuntu_codename}
 ARG ubuntu_codename
 
-ENV  ubuntu_codename=${ubuntu_codename}
+ENV  ubuntu_codename=${ubuntu_codename} \
+     user=www-data \
+     group=www-data
 
 RUN set -x \
     && apt-get update \
-    && apt-get install --no-install-recommends --no-install-suggests -y apt-transport-https ca-certificates \
+    && apt-get install --no-install-recommends --no-install-suggests -y apt-transport-https ca-certificates wget gnupg2 lsb-release \
     && wget https://nginx.org/keys/nginx_signing.key \
     && apt-key add nginx_signing.key \
-    && echo "deb https://nginx.org/packages/mainline/ubuntu/dists/ ${ubuntu_codename} nginx" >> /etc/apt/sources.list \
+    && echo "deb https://nginx.org/packages/ubuntu ${ubuntu_codename} nginx" >> /etc/apt/sources.list \
     && apt-get update -y \
     && apt-get install -y nginx
 
 # copy the default nginx.conf file
-COPY --chown=nginx:nginx files-to-add/nginx.conf /etc/nginx/nginx.conf
+COPY files-to-add/nginx.conf /etc/nginx/nginx.conf
 
 #Rediret logfiles to stdout
 RUN set -x \
     && mkdir -p /var/log/nginx \
     && mkdir -p /var/cache/nginx \
-    && chown -R nginx:nginx /var/cache/nginx /var/log/nginx \
+    && chown -R ${user}:${group} /var/cache/nginx /var/log/nginx \
     && chmod 775 /var/cache/nginx /var/log/nginx \
     && touch /var/log/nginx/{access.log,error.log,nginx.pid} \
     && ln -sf  /dev/stdout /var/log/nginx/access.log \
@@ -34,7 +36,7 @@ RUN set -x \
 EXPOSE 8080
 
 # Drop to nonroot  user
-USER nginx
+USER ${user}
 
 # Image meta data
 LABEL name="nginx" \
