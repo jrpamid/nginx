@@ -29,16 +29,16 @@ Nginx Version to be compiled and  built can be passed as a build arg. Default ve
 # ------------ #
 
 # nginx on alpine  build 
-$sudo docker build --tag nginx_alpine:1.16.1 --build-arg nginx_ver=1.16.1 alpine_ver=3.10.3 .
-$sudo docker build --tag nginx_alpine:1.17.1 --build-arg nginx_ver=1.17.1 alpine_ver=latest .
+$sudo docker build --tag nginx-alpine:1.16.1 --build-arg nginx_ver=1.16.1 alpine_ver=3.10.3 .
+$sudo docker build --tag nginx-alpine:1.17.1 --build-arg nginx_ver=1.17.1 alpine_ver=latest .
 
 # Test and dump the configuration
-$sudo docker run -itd nginx_alpine:1.16.1 -T
+$sudo docker run -itd nginx-alpine:1.16.1 -T
 
 # Run a nginx container and test
-$sudo docker run -itd --name my_nginx_test -p 8080:8080 nginx_alpine:1.16.1
-$sudo docker exec my_nginx_test -T
-$sudo docker logs my_nginx_test
+$sudo docker run -itd --name my_nginx-test -p 8080:8080 nginx-alpine:1.16.1
+$sudo docker exec my_nginx-test -T
+$sudo docker logs my_nginx-test
 $curl http:/localhost:8080 
 
 # Run a nginx container and map custom nginx.conf file and static html pages
@@ -46,7 +46,7 @@ $ sudo docker run -itd --name my_wwww \
                        -p 8080:8080 \
 					   -v /website/html:/opt/nginx/html \
 					   -v /website/nginx.conf:/opt/nginx/conf/nginx.conf \
-					   nginx_alpine:1.16.1
+					   nginx-alpine:1.16.1
 
 ````
 
@@ -72,15 +72,15 @@ Default version = 1.16.1
 # ------------ #
 
 # nginx version = 1.16.1
-$sudo docker build --tag nginx_centos:1.16.1 --build-arg nginx_ver=1.16.1 .
+$sudo docker build --tag nginx-centos:1.16.1 --build-arg nginx_ver=1.16.1 .
 
 # Test and dump the configuration
-$sudo docker run -itd nginx_centos:1.16.1 -T
+$sudo docker run -itd nginx-centos:1.16.1 -T
 
 # Run a nginx container and test
-$sudo docker run -itd --name my_nginx_test -p 8080:8080 nginx_centos:1.16.1
-$sudo docker exec my_nginx_test -T
-$sudo docker logs my_nginx_test
+$sudo docker run -itd --name my_nginx-test -p 8080:8080 nginx-centos:1.16.1
+$sudo docker exec my_nginx-test -T
+$sudo docker logs my_nginx-test
 $curl http:/localhost:8080 
 
 # Run a nginx container and map custom nginx.conf file and static html pages
@@ -88,7 +88,7 @@ $ sudo docker run -itd --name my_wwww \
                        -p 8080:8080 \
 					   -v /website/html:/opt/nginx/html \
 					   -v /website/nginx.conf:/opt/nginx/conf/nginx.conf \
-					   nginx_centos:1.17.1
+					   nginx-centos:1.17.1
 
 ````
 
@@ -132,20 +132,20 @@ Version depends on the repo.
 # ------------ #
 
 # ubuntu 16.04 codename=xenial
-$sudo docker build --tag nginx_ubuntu:xenial --build-arg ubuntu_codename=xenial .
+$sudo docker build --tag nginx-ubuntu:xenial --build-arg ubuntu_codename=xenial .
 
 # ubuntu 18.04 codename = bionic
-$sudo docker build --tag nginx_ubuntu:bionic --build-arg ubuntu_codename=bionic .
+$sudo docker build --tag nginx-ubuntu:bionic --build-arg ubuntu_codename=bionic .
 #ubuntu 19.04 codename=disco
-$sudo docker build --tag nginx_ubuntu:disco --build-arg ubuntu_codename=disco .
+$sudo docker build --tag nginx-ubuntu:disco --build-arg ubuntu_codename=disco .
 
 # Test and dump the configuration
-$sudo docker run -itd nginx_ubuntu:disco -T
+$sudo docker run -itd nginx-ubuntu:disco -T
 
 # Run a nginx container and test
-$sudo docker run -itd --name my_nginx_test -p 8080:8080 nginx_ubuntu:disco
-$sudo docker exec my_nginx_test -T
-$sudo docker logs my_nginx_test
+$sudo docker run -itd --name my_nginx-test -p 8080:8080 nginx-ubuntu:disco
+$sudo docker exec my_nginx-test -T
+$sudo docker logs my_nginx-test
 $curl http:/localhost:8080 
 
 # Run a nginx container and map custom nginx.conf file and static html pages
@@ -153,7 +153,7 @@ $ sudo docker run -itd --name my_wwww \
                        -p 8080:8080 \
 					   -v /website/html:/opt/nginx/html \
 					   -v /website/nginx.conf:/opt/nginx/conf/nginx.conf \
-					   nginx_ubuntu:disco
+					   nginx-ubuntu:disco
 
 ````
 
