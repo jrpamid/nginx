@@ -7,6 +7,10 @@ on:
   pull_request:
     branches: [ master ]
 
+env:
+  NGINX_VERSION: 1.22.1
+  CENTOS_VERSION: 8
+  
 jobs:
 
   build:
@@ -19,5 +23,5 @@ jobs:
       run: |
        cd ./build/centos
        echo "${{ secrets.DOCKERPW }}" | docker login -u "jrpamid" --password-stdin
-       docker build -t jrpamid/nginx-centos:1.18.0 --build-arg centos_ver=8 --build-arg nginx_ver=1.18.0 .
-       docker push jrpamid/nginx-centos:1.18.0
+       docker build -t jrpamid/nginx-centos:1.18.0 --build-arg centos_ver=${{ env.CENTSOS_VERSION }} --build-arg nginx_ver=${{ env.NGINX_VERSION }}.
+       docker push jrpamid/nginx-centos:${{ env.NGINX_VERSION }}
