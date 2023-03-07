@@ -23,5 +23,5 @@ jobs:
       run: |
        cd ./build/centos
        echo "${{ secrets.DOCKERPW }}" | docker login -u "jrpamid" --password-stdin
-       docker build -t jrpamid/nginx-centos:${{ env.NGINX_VERSION }} --build-arg centos_ver=${{ env.CENTSOS_VERSION }} --build-arg nginx_ver=${{ env.NGINX_VERSION }} .
+       docker build -t jrpamid/nginx-centos:${{ env.NGINX_VERSION }} --build-arg centos_ver=${{ env.CENTOS_VERSION }} --build-arg nginx_ver=${{ env.NGINX_VERSION }} .
        docker push jrpamid/nginx-centos:${{ env.NGINX_VERSION }}
