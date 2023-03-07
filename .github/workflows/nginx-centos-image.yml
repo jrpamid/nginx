@@ -9,7 +9,7 @@ on:
 
 env:
   NGINX_VERSION: 1.22.1
-  CENTOS_VERSION: 8
+  CENTOS_VERSION: 7
   
 jobs:
 
