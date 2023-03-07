@@ -18,5 +18,5 @@ jobs:
       run: |
        cd ./build/alpine  
        echo "${{ secrets.DOCKERPW }}" | docker login -u "jrpamid" --password-stdin
-       docker build -t jrpamid/nginx-alpine:1.18.0 --build-arg alpine_ver=3.12 --build-arg nginx_ver=1.18.0 .
-       docker push jrpamid/nginx-alpine:1.18.0
+       docker build -t jrpamid/nginx-alpine:${{ NGINX_VERSION}} --build-arg alpine_ver=${{ ALPINE_VERSION }} --build-arg nginx_ver=${{ NGINX_VERSION }}] .
+       docker push jrpamid/nginx-alpine:${{ NGINX_VERSION }}
