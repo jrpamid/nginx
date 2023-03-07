@@ -22,5 +22,5 @@ jobs:
       run: |
        cd ./build/ubuntu
        echo "${{ secrets.DOCKERPW }}" | docker login -u "jrpamid" --password-stdin
-       docker build -t jrpamid/nginx-ubuntu:${{ env.NGINX_VERSION:}} --build-arg ubuntu_codename=${{ env.UBUNTU_CODENAME }} --build-arg nginx_ver=${{ env.NGINX_VERSION }} .
+       docker build -t jrpamid/nginx-ubuntu:${{ env.NGINX_VERSION }} --build-arg ubuntu_codename=${{ env.UBUNTU_CODENAME }} --build-arg nginx_ver=${{ env.NGINX_VERSION }} .
        docker push jrpamid/nginx-ubuntu:${{ env.NGINX_VERSION }}
